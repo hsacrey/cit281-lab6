@@ -1,37 +1,82 @@
-## Welcome to GitHub Pages
+## Lab 6
 
-You can use the [editor on GitHub](https://github.com/hsacrey/cit281-lab6/edit/main/README.md) to maintain and preview the content for your website in Markdown files.
+In this lab, I created and tested the Book and Library classes. I added at created a _new_ object from one given to me, and I also created the ISBN and a delete book method.
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+#### lab-06.js:
+```javascript
+class Book {
+    constructor(title, author, pubDate, isbn) {
+      this.title = title;
+      this.author = author;
+      this.pubDate = pubDate;
+      this.isbn = isbn;
+    }
+}
 
-### Markdown
+class Library {
+    constructor(name) {
+      this._name = name;
+      this._books = [];
+    }
+    get books() {
+      // Return copy of books
+      return JSON.parse(JSON.stringify(this._books));
+    }
+    get count() {
+      return this._books.length;
+    }
+    addBook(book = {}) {
+      const { title = "", author = "", pubDate = "", isbn = "" } = book;
+      if (title.length > 0 && author.length > 0) {
+        const newBook = { title, author, pubDate, isbn };
+        this._books.push(newBook);
+      }
+    }
+    listBooks() {
+      for (const book of this._books) {
+        const {title, author, pubDate, isbn} = book;
+        console.log(`Title: ${title}, Author: ${author}, PubDate: ${pubDate}, ISBN: ${isbn}`)
+      }
+    }
+    deleteBook(isbn){
+      for (const book of this._books) {
+         if(book.isbn == isbn){
+          this._books.splice(this._books.indexOf(book.isbn));
+        }
+      }
+    }
+}
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+// // Create library object
+const library = new Library("New York Times Best Seller List");
 
-```markdown
-Syntax highlighted code block
+// // Create a book
+// const atomicHabits = new Book("Atomic Habits", "James Clear", "10/16/2018");
 
-# Header 1
-## Header 2
-### Header 3
+const meno = new Book("Meno", "Plato", "385 BCE", "9780521172288");
+const freedomEssay = new Book("Philosophical Investigations into the Essence of Human Freedom and Those Matters Connected Therewith", "F.W.J. Schelling", "1809", "9780791468746");
 
-- Bulleted
-- List
+// // Add book to library and output library count and books
+// library.addBook(atomicHabits);
+//library.addBook(meno);
+//library.addBook(freedomEssay);
+// console.log(`Book count: ${library.count}`);
+// library.listBooks();
 
-1. Numbered
-2. List
+// Create books
+const atomicHabits = new Book("Atomic Habits", "James Clear", "10/16/2018", "0735211299");
+const theHillWeClimb = new Book("The Hill We Climb", "David Baldacci", "03/30/2021", "059346527X");
+const oceanPrey = new Book("Ocean Prey", "John Sandford", "04/13/2021", "1398505501");
 
-**Bold** and _Italic_ and `Code` text
+// Add books to library and output library count and books
+library.addBook(atomicHabits);
+library.addBook(theHillWeClimb);
+library.addBook(oceanPrey);
+console.log(`Book count: ${library.count}`);
+library.listBooks();
 
-[Link](url) and ![Image](src)
+// Delete a book and output library books
+console.log("* Library after delete *");
+library.deleteBook("059346527X");
+library.listBooks();
 ```
-
-For more details see [Basic writing and formatting syntax](https://docs.github.com/en/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/hsacrey/cit281-lab6/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
